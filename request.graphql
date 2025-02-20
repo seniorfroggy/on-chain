@@ -1,0 +1,21 @@
+{
+  Solana(dataset: archive) {
+    DEXTradeByTokens(
+      orderBy: {descendingByField: "Block_Timefield"}
+      where: {Trade: {Currency: {MintAddress: {is: "6D7NaB2xsLd7cauWu1wKk6KBsJohJmP2qZH9GEfVi5Ui"}}, Side: {Currency: {MintAddress: {is: "So11111111111111111111111111111111111111112"}}}, PriceAsymmetry: {lt: 0.1}}}
+      limit: {count: 10}
+    ) {
+      Block {
+        Timefield: Time(interval: {in: days, count: 1})
+      }
+      volume: sum(of: Trade_Amount)
+      Trade {
+        high: Price(maximum: Trade_Price)
+        low: Price(minimum: Trade_Price)
+        open: Price(minimum: Block_Slot)
+        close: Price(maximum: Block_Slot)
+      }
+      count
+    }
+  }
+}
